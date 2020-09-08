@@ -1,0 +1,28 @@
+Punto en la imagen a partir del punto real en un mapa
+	xi = (xr - xrmin) * ancho_img / (xrmax - xrmin) 
+	yi = (yr - yrmin) * alto_img / (yrmax - yrmin) 
+
+	Paralaje
+		p = p0 * (zr - zrmin) / (zrmax - zrmin)
+
+	El paralaje modifica las x de las dos imágenes se divide por igual entre la imagen derecha e izquierda
+		xidp = xi + p/2
+		xiip = xi - p/2
+
+Punto real a partir de un punto en la imagen
+	Paralaje
+		p = xid - xii
+	
+	Coordenada x por la imagen
+		xi = xid - p/2
+
+	El punto real (r) se obtiene a partir del punto (i) en la imagen
+		xr = xrmin + xi * (xrmax - xrmin) / ancho_img
+		yr = yrmin + yi * (yrmax - yrmin) / ancho_img
+
+	La altura real se obiene a la inversa
+		zr = p / p0 * (zrmax - zrmin) + zrmin
+			p0 * (zr - zrmin) = p * (zrmax - zrmin)
+			zr - zrmin = p / p0 * (zrmax - zrmin)
+			zr = zrmin + p / p0 * (zrmax - zrmin)
+

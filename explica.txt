@@ -1,0 +1,74 @@
+El programa dibuja las curvas de nivel (contours) sobre una imagen
+La imagen es un anaglifo y las curvas tambien lo son
+
+Lo que se busca es que las curvas y la imagen estén georeferencias para que coincidan horizontalmente
+Y la idea es mover las curvas para que coincidad verticalmente
+Al final se tiene una coincidencia en las tres dimensiones
+Las curvas vienen georeferencias de qgis
+La foto no está georeferenciada, por lo que ella se debe ajustar a las curvas
+Para ayudar a esta georeferenciacion se dibujan algunos detalles visibles en las curvas
+
+Modo ajuste
+	Anaglifo
+		Vertical y Rotación
+			Para buscar que las fotos queden alineadas
+			Se hacen al tiempo hasta que cuadren las fotos
+		Horizontal
+			Para la vista inicial, despues se cambia mientras se observa o dibuja
+			self.xanag0, self.yanag0 y se dan cuando se llama la función
+
+	Alineación horizontal
+		Amplia/reduce la imagen
+			Con el boton derecho y asdw
+			xsize, ysize
+		 Desplaza arriba/abajo y derecha/izquirda 
+			Con el botón izquierdo y asdw
+			xpos, ypos
+
+		Consideraciones
+			img = imagen que se muestras
+			anag0 = imagen que se lee
+			anag0 es mayor o menor que img
+			Esto hace necesario que anag0 se estreche o se alargue para ajustarla a img
+			Cuando se estreche o alargue hay que hacerlo sobre anag0
+			Si se alarga se le quitan pedazos a los lados
+			Si se estrecha se le agregan franjas negras a los lados
+			Hay que encontrar una fórmula que refleje esto
+			Actualmente he trabajado con una anag0 más grande que img y hago cv2.resize para ajustarla
+
+			algoritmo
+				Crear img en negro
+				Ajusta anag0
+				La mete en img
+
+	Alineación vertical o profundidad
+		Se necesita que para una altura corresponda el mismo paralaje en la foto y en las curvas
+		Como se hace esto?
+
+
+
+	Para ver bien en las diferentes alturas
+		Es necesario mover una de las partes (izq/der) de la imagen y de las curvas. 
+		Se hace con el botón derecho
+
+Modo dib
+	Ajuste horizontal del anaglifo y de las curvas
+		Para facilitar la vista a diferentes alturas
+
+	Para editar las curvas
+		Se señala una curva con el botón izquierdo
+		Se dibujan los puntos de esa curva
+		Se señala un punto en la curva con el botón izquierdo
+		Se cambia de color ese punto
+		Se señala la nueva posición con el botón izquierdo
+
+	Zoom ya
+		Se hace click con el botón izquierdo en la esquina sup der y sin soltarlo se arrastra hasta la esquina inf izq 
+		Tal vez mejor usar la rueda de centro el sitio donde está el mouse
+
+
+
+
+	Pan ya
+		Presionando control
+		Se hace clik con el botón izquierdo y se arrastra hacia la dirección que se quiera

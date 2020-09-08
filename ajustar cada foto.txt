@@ -1,0 +1,26 @@
+Dibujar una foto y las curvas correspondientes
+Las curvas se van a ajustar a la foto
+
+Ajustes a la foto izquierda
+	Posicion vertical
+	Rotación
+	Tal vez la escala
+
+Ajustes a la curvas (transformación o dibujo de las curvas sobre las fotos)
+	Posicion de las curvas en la foto izq
+		posxi, posyi
+		se cambian con la tecla ctrl, el botón izq, las teclas x, y, y las techas i, d
+	Escala de las curvas en la foto izq
+		escxi, escyi
+		se cambian con el botón izq, las teclas x, y, y las teclas i, d
+
+Dibujo de las curvas
+	Para la posicion solo es sumar o restar de la coordenada en la imagen
+
+
+
+
+Procedimiento
+	Se ajusta la foto izquierda
+	Se ajustan las curvas, izquierda y derecha, a las fotos
+		Se apaga la parte derecha o izquierda self.parte = ''  # '', 'd', 'i' con la tecla f

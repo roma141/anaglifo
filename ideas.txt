@@ -1,0 +1,63 @@
+Superponer la imagen sobre las curvas
+	Escalar
+	Trasladar
+	Rotar
+
+	Hacerlo todo al tiempo como google earth
+		La rueda para escalar
+		El mouse izquierdo y mover el mouse para trasladar
+		la rueda oprimida y mover el mouse para rotar
+
+Zoom y Pan con la foto
+
+Mover puntos de las curvas
+
+Crear nueva curva
+	Altura
+	Numero de puntos
+
+
+Proceso
+	La imagen se llena con las curvas para mantener la proporción de las curvas
+		Se establece una relación entre la imagen y las curvas<: img coor img <-> coor real 
+
+	El anaglifo se dibuja sobre esta imagen
+		Al hacerlo se distorciona
+		Entonces hay que ajustarlo
+			De todos modos hay que hacerlo
+			De hecho, cuando se hace zoom, hay que hacerlo
+
+Empate del anaglifo y las curvas
+	Antes cortar la imagen
+
+	Primero se establece el ancho
+		El anaglifo se estrecha en X, con la rueda
+		cv2.resize
+
+	Segundo se establece la altura
+		El anaglifo se estrecha en Y, con la rueda
+		cv2.resize
+
+	Tercero se establece la rotación
+		El anaglifo se rota R, con la rueda
+		cv2.rotate
+
+	Cuarto se establece la posición
+		El anaglifo se traslada T, con el mouse
+		cv2.warpAffine
+
+	El mismo paralaje para la misma altura
+		Al desplazar el anaglifo en dirección Y el paralaje en el anaglifo se iguala al de las curvas en la Y del mouse
+
+
+Controles
+	Modo horizontal, se marca X
+	Con la rueda se amplia o reduce, con el mouse se mueve
+	resize y warAffine
+
+	Modo horizontal, se marca Y
+	Con la rueda se amplia o reduce, con el mouse se mueve
+	resize y warAffine
+	El paralaje o separación se ajusta a las curvas donde se encuentra el Y del cursor
+
+
