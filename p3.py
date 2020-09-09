@@ -40,5 +40,3 @@ imgi, imgd = sepanag(img)
 
 show('p3 imgi', imgi)
 show('p3 imgd', imgd)
-
-

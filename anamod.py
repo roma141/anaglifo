@@ -7,7 +7,17 @@ def read_dic(filename):
         dic = eval(f.read())    
     return dic
 
-def sepanag(img):
+def show(window, img):
+    print(img.shape)
+    cv2.imshow(window, img)
+    while True:
+        key = cv2.waitKey(1)
+        print(key) 
+        if key == 27:
+            break
+    cv2.destroyAllWindows()
+
+def sepanag_gm(img):
     (rows, cols, _) = img.shape
 
     imgi = np.zeros([rows,cols, 3], dtype=np.uint8)
@@ -19,6 +29,23 @@ def sepanag(img):
     imgd = np.zeros([rows,cols, 3], dtype=np.uint8)
     imgd[:, :, 2] = img[:, :, 2]
     imgd[:, :, 1] = img[:, :, 2]
+    imgd[:, :, 0] = img[:, :, 0]
+    imgd = cv2.cvtColor(imgd, cv2.COLOR_BGR2GRAY)
+
+    return imgi, imgd
+
+def sepanag_rb(img):
+    (rows, cols, _) = img.shape
+
+    imgi = np.zeros([rows,cols, 3], dtype=np.uint8)
+    imgi[:, :, 2] = img[:, :, 2]
+    imgi[:, :, 1] = img[:, :, 2]
+    imgi[:, :, 0] = img[:, :, 2]
+    imgi = cv2.cvtColor(imgi, cv2.COLOR_BGR2GRAY)
+
+    imgd = np.zeros([rows,cols, 3], dtype=np.uint8)
+    imgd[:, :, 2] = img[:, :, 0]
+    imgd[:, :, 1] = img[:, :, 0]
     imgd[:, :, 0] = img[:, :, 0]
     imgd = cv2.cvtColor(imgd, cv2.COLOR_BGR2GRAY)
 
@@ -53,7 +80,9 @@ def fit(img, anchoimg, altoimg, x, y):
     return make_anag(img, x, y)
 
 def insert(grande, peq, x, y):
-    if peq.shape[0] + x <= grande.shape[0] and peq.shape[1] + y <= grande.shape[1]:
+    print("grande", grande.shape)
+    print("peq", peq.shape)
+    if peq.shape[0] + y <= grande.shape[0] and peq.shape[1] + x <= grande.shape[1]:
         grande[y: y + peq.shape[0], x: x + peq.shape[1]] = peq
     return grande 
 
@@ -69,10 +98,10 @@ class Image(object):
         self.anchoimg = 1000
         self.altoimg = 1000 # 1100 para el zanjon
 
-        self.xsize = 700
+        self.xsize = 540 # 300
         self.ysize = 697 # 620
-        self.xpos = 300
-        self.ypos = 221 #250
+        self.xpos = 460  # 300
+        self.ypos = 234  # 221
 
 
         self.parte = ''  # '', 'd', 'i'
@@ -111,8 +140,10 @@ class Image(object):
 
         if self.dibimagen:
             imgx =  cv2.resize(self.anag0, (self.xsize, self.ysize), interpolation=cv2.INTER_LINEAR) # tamaño
-            if self.cabe():
-                self.anag = insert(self.img, imgx, self.xpos, self.ypos) # posicion
+            print("size", imgx.shape)
+            print("pos", self.xpos, self.ypos)
+            # if self.cabe():
+            self.anag = insert(self.img, imgx, self.xpos, self.ypos) # posicion
             
             if self.parte == '':
                 self.imgl[:, :, 2] = self.anag[:, :, 2]        # R -> R
@@ -316,6 +347,14 @@ class Image(object):
                 self.draw()
 
         elif event == cv2.EVENT_MOUSEWHEEL:
+            print("flags p0", flags, self.contours.p0)
+            if flags>0:
+                self.contours.p0 += 5
+                self.draw()
+            else:
+                self.contours.p0 -= 5
+                self.draw()
+            
             if self.direccion == 'y':
                 print('rueda y')
             elif self.direccion == 'x':
@@ -376,7 +415,7 @@ class Contours(object):
 
         self.anchoimg = 1000
         self.altoimg = 1000
-        self.p0 = 30
+        self.p0 = 70
         # self.poscurx = 7
 
         if not self.vertex.any():
@@ -509,12 +548,20 @@ class Contours(object):
 contours = Contours('curvasn.geojson')
 
 # img = cv2.imread('2443toda.jpg')
-# imgi, imgd = sepanag(img)
+# imgi, imgd = sepanag_gm(img)
 
-imgi = cv2.imread('ValtodaI.jpg')
-imgi = cv2.cvtColor(imgi, cv2.COLOR_BGR2GRAY)
-imgd = cv2.imread('ValtodaD.jpg')
-imgd = cv2.cvtColor(imgd, cv2.COLOR_BGR2GRAY)
+img = cv2.imread('Valtoda.jpg')
 
+img = img[:, 0:-200, :]
+
+imgi, imgd = sepanag_rb(img)
+
+# show('temp', imgi)
+# show('temp', imgd)
+
+# imgi = cv2.imread('ValtodaI.jpg')
+# imgi = cv2.cvtColor(imgi, cv2.COLOR_BGR2GRAY)
+# imgd = cv2.imread('ValtodaD.jpg')
+# imgd = cv2.cvtColor(imgd, cv2.COLOR_BGR2GRAY)
 
 img = Image(contours, imgi, imgd)
