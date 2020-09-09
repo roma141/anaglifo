@@ -79,8 +79,8 @@ class Image(object):
 
 
         # self.p0 = 50
-        self.poscurx = 7
-        self.poscury = 0
+        # self.poscurx = 7
+        # self.poscury = 0
         self.xanag = -125  # -220
         self.yanag = 42
         self.imgi = imgi
@@ -144,6 +144,8 @@ class Image(object):
         self.img[:, :, 2] = self.imgl[:, :, 2]
 
     def onmouse(self, event, x, y, flags, param):
+        self.ctrl_clicked = False
+        self.shift_clicked = False
 
         if flags == cv2.EVENT_FLAG_CTRLKEY + cv2.EVENT_FLAG_LBUTTON:
             self.ctrl_clicked = True
@@ -247,7 +249,7 @@ class Image(object):
                         self.yanag = ant 
 
                 elif self.direccion == 'x':
-                    print('xanag x / p0', self.xanag, self.contoursF.p0)
+                    print('xanag x / p0', self.xanag, self.contours.p0)
                     delta = x - self.xm0
                     print(delta, x, self.xm0)
                     self.xm0 = x
@@ -255,11 +257,11 @@ class Image(object):
                     if delta>0:
                         print('inc')
                         self.xanag += 5
-                        self.contours.p0 -= 5
+                        # self.contours.p0 -= 5 # con esto se logra el efecto de que arriba y abajo se unen
                     else:
                         print('dec')
                         self.xanag -= 5
-                        self.contours.p0 += 5
+                        # self.contours.p0 += 5
                     
                     if self.cabe():
                         # self.anag0 = make_anag(anag, self.xanag, self.yanag)
@@ -374,8 +376,8 @@ class Contours(object):
 
         self.anchoimg = 1000
         self.altoimg = 1000
-        self.p0 = 100
-        self.poscurx = 7
+        self.p0 = 30
+        # self.poscurx = 7
 
         if not self.vertex.any():
             return imgl, imgr
