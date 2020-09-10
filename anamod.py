@@ -212,12 +212,7 @@ class Image(object):
             if flags == cv2.EVENT_FLAG_CTRLKEY + cv2.EVENT_FLAG_LBUTTON:
                 self.right_clicked = False
                 self.ctrl_clicked = True
-
-            # if self.modoed == 'dib':
-            #     self.clicked = False
-            #     self.contours.extends()
-            #     self.draw_contours()
-        
+       
         elif event == cv2.EVENT_MOUSEMOVE:
             if self.left_clicked and not self.ctrl_clicked and not self.shift_clicked and self.modoed=='ajuste': # ESCALA
                 if self.direccion == 'y':
@@ -317,53 +312,15 @@ class Image(object):
                         # self.contours.p0 += 5
                     
                     if self.cabe():
-                        # self.anag0 = make_anag(anag, self.xanag, self.yanag)
                         self.anag0 = make_anag(self.imgi, self.imgd, self.xanag, self.yanag)
                         self.draw()
                     else:
                         self.xanag = ant 
 
-                
-                # elif self.direccion == 'x':
-                #     print('xanag x / xcur', self.xanag, self.poscurx)
-                #     delta = x - self.xm0
-                #     print(delta, x, self.xm0)
-                #     self.xm0 = x
-                #     ant = self.xanag
-                #     if delta>0:
-                #         print('inc')
-                #         self.xanag += 5
-                #         self.poscurx -= 1
-                #     else:
-                #         print('dec')
-                #         self.xanag -= 5
-                #         self.poscurx += 1
-                    
-                #     if self.cabe():
-                #         self.anag0 = make_anag(self.imgi, self.imgd, self.xanag, self.yanag)
-                #         self.draw()
-                #     else:
-                #         self.xanag = ant 
-
-
         elif event == cv2.EVENT_LBUTTONUP:
             if self.modoed == 'dib':
                 if self.left_clicked:
                     self.zoom(x, y)
-                    # if self.xm0 > x:
-                    #     self.xm0, x = x, self.xm0
-                    # if self.ym0 > y:
-                    #     self.ym0, y = y, self.ym0
-
-                    # self.contours.zoom(self.contours.to_map((self.xm0, self.ym0), (self.xm0, self.ym0)),\
-                    #                    self.contours.to_map((x, y), (x, y)))
-                    # self.draw()
-
-                # elif self.ctrl_clicked: # pan
-                #     ini = self.contours.to_map((self.xm0, self.ym0), (self.xm0, self.ym0))
-                #     fin = self.contours.to_map((x, y), (x, y))
-                #     self.contours.pan(ini, fin)
-                #     self.draw()
 
             self.left_clicked = False
             self.ctrl_clicked = False
@@ -390,7 +347,6 @@ class Image(object):
                 print('rueda x')            
 
     def show(self):
-        # cv2.imshow(self.contours.filename, self.img)
         cv2.moveWindow(self.contours.filename,300,0)
         while True:
             cv2.imshow(self.contours.filename, self.img)
@@ -426,7 +382,7 @@ class Image(object):
                      self.modoed = 'ajuste'
                 else:
                      self.modoed = 'dib'
-                # cv2.setWindowTitle(self.contours.filename, self.contours.filename + ' ' + self.modoed)
+
         cv2.destroyAllWindows()
 
 
@@ -517,19 +473,6 @@ class Contours(object):
 
         izquierdo = (255,0,105)
         derecho = (0,255,0)   
-
-        # anchov, altov = self.vertex.shape
-        # z0 = self.vertex[0][2]
-        # x0, y0, p = self.to_img(self.vertex[0])
-        # for i in range(1, anchov):
-        #     z1 = self.vertex[i][2]
-        #     x1, y1, p = self.to_img(self.vertex[i])
-        #     if z1 == z0:
-        #         fun = cv2.line if z1 != 1100 else cv2.arrowedLine
-        #         fun(self.imgr, (x0 + p, y0), (x1 + p, y1), izquierdo, thickness=2)
-        #         fun(self.imgl, (x0 - p, y0), (x1 - p, y1), derecho, thickness=2)
-                
-        #     x0, y0, z0 = x1, y1, z1
 
         anchov, altov = self.vertex.shape
         z0 = self.vertex[0][2]
