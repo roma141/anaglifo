@@ -128,6 +128,23 @@ class Image(object):
         self.draw()
         self.show()
 
+    def zoom(self, x, y):
+        if self.xm0 > x:
+            self.xm0, x = x, self.xm0
+        if self.ym0 > y:
+            self.ym0, y = y, self.ym0
+
+        ancho, alto = (x - self.xm0), (y - self.ym0)
+        propor = self.img.shape[0] / self.img.shape[1]
+        k = alto / ancho
+        if propor >= 1:
+            if k < 1:
+                alto = int(ancho * propor)
+            else:
+                ancho = int(alto / propor)
+
+        self.img = self.img[self.ym0: self.ym0 + alto, self.xm0: self.xm0 + ancho]
+        self.img =  cv2.resize(self.img, (850, 1000), interpolation=cv2.INTER_LINEAR)
 
     def cabe(self):
         return  self.xsize + self.xpos <= self.anchoimg and self.ysize + self.ypos <= self.altoimg
@@ -195,6 +212,11 @@ class Image(object):
             if flags == cv2.EVENT_FLAG_CTRLKEY + cv2.EVENT_FLAG_LBUTTON:
                 self.right_clicked = False
                 self.ctrl_clicked = True
+
+            # if self.modoed == 'dib':
+            #     self.clicked = False
+            #     self.contours.extends()
+            #     self.draw_contours()
         
         elif event == cv2.EVENT_MOUSEMOVE:
             if self.left_clicked and not self.ctrl_clicked and not self.shift_clicked and self.modoed=='ajuste': # ESCALA
@@ -326,19 +348,26 @@ class Image(object):
 
         elif event == cv2.EVENT_LBUTTONUP:
             if self.modoed == 'dib':
-                if self.left_clicked and self.xm0 < x and self.ym0 < y: # zoom
-                    self.contours.zoom(self.contours.to_map((self.xm0, self.ym0), (self.xm0, self.ym0)),\
-                                       self.contours.to_map((x, y), (x, y)))
-                    self.draw()
+                if self.left_clicked:
+                    self.zoom(x, y)
+                    # if self.xm0 > x:
+                    #     self.xm0, x = x, self.xm0
+                    # if self.ym0 > y:
+                    #     self.ym0, y = y, self.ym0
 
-                elif self.ctrl_clicked: # pan
-                    ini = self.contours.to_map((self.xm0, self.ym0), (self.xm0, self.ym0))
-                    fin = self.contours.to_map((x, y), (x, y))
-                    self.contours.pan(ini, fin)
-                    self.draw()
+                    # self.contours.zoom(self.contours.to_map((self.xm0, self.ym0), (self.xm0, self.ym0)),\
+                    #                    self.contours.to_map((x, y), (x, y)))
+                    # self.draw()
+
+                # elif self.ctrl_clicked: # pan
+                #     ini = self.contours.to_map((self.xm0, self.ym0), (self.xm0, self.ym0))
+                #     fin = self.contours.to_map((x, y), (x, y))
+                #     self.contours.pan(ini, fin)
+                #     self.draw()
 
             self.left_clicked = False
             self.ctrl_clicked = False
+            self.shift_clicked = False
 
         elif event == cv2.EVENT_RBUTTONDOWN:
             if self.modoed == 'dib':
@@ -361,6 +390,8 @@ class Image(object):
                 print('rueda x')            
 
     def show(self):
+        # cv2.imshow(self.contours.filename, self.img)
+        cv2.moveWindow(self.contours.filename,300,0)
         while True:
             cv2.imshow(self.contours.filename, self.img)
             cv2.setWindowTitle(self.contours.filename, self.contours.filename + ' ' + self.modoed + ' ' + self.parte)
@@ -395,7 +426,7 @@ class Image(object):
                      self.modoed = 'ajuste'
                 else:
                      self.modoed = 'dib'
-                cv2.setWindowTitle(self.contours.filename, self.contours.filename + ' ' + self.modoed)
+                # cv2.setWindowTitle(self.contours.filename, self.contours.filename + ' ' + self.modoed)
         cv2.destroyAllWindows()
 
 
